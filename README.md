@@ -14,6 +14,7 @@ Student GradeBook is a personal project (MTech) of mine. It uses hashtable and p
 |-- promptsPS12.txt
 |-- utilities
     |-- __init__.py
+    |-- errors.py
     |-- formatter.py
     |-- hash_table.py
     |-- parser.py

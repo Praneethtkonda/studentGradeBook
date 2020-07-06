@@ -109,6 +109,13 @@ class HashTable:
         bucket_index = self._hash_function(key)
         self._delete_bucket_item(bucket_index, key)
 
+    def has(self, key):
+        bucket_index = self._hash_function(key)
+        found, latest_bucket_index = self._find_bucket_index(bucket_index, key)
+        if not found:
+            return False
+        return True
+
     # Dunder methods
     def __len__(self):
         return self._n
@@ -161,6 +168,8 @@ class HashTable:
 # h.set('2010CSE1230', 4.9)
 # h.set('2010CSE1231', 5.0)
 
+# print("Is  key present:", h.has('2010CSE1231'))
+# print("Is  key present:", h.has('a'))
 # print(h.keys())
 # print(h.get('2010CSE1230'))
 # print("The number of keys inserted are: ", len(h))
