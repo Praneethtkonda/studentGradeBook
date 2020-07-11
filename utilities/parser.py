@@ -1,23 +1,32 @@
 from utilities.errors import CgpaNotInRangeError, WrongInputFormat
 class Parser():
+    """ Utility class which has member functions that will be used for parsing inputPS12.txt and promptPS12.txt and has some exception handling. """
     def __init__(self):
-        super().__init__()
         self.stu_format = 'YYYYGRPSTID / CGPA'
         self.prompt_format = 'courseOffer: min_cgpa : max_cgpa'
 
     def _student_string_parser(self, student_string, delimiter):
+        """ Private method used to parse a student_id string and return the student_id and cgpa
+            Throws error for the following reasons:-
+              1.) Wrong student string format
+              2.) Wrong cgpa range value
+              3.) Floating point exception
+        """
         stud_list = student_string.strip().split(delimiter)
         if len(stud_list) != 2:
             raise WrongInputFormat(f"Wrong input student format as it is not in the format {self.stu_format}")
         stud_details_list = []
         stud_id = stud_list[0].strip()
         stud_cgpa = float(stud_list[1].strip())
-        if not 0.0 < stud_cgpa <= 5.0:
+        if not 0.0 <= stud_cgpa <= 5.0:
             raise CgpaNotInRangeError(stud_cgpa)
         stud_details_list.extend([stud_id, stud_cgpa])
         return stud_details_list
 
     def student_file_parser(self, file_name, delimiter):
+        """ Parses the inputPS12.txt and returns a list of students to be inserted.
+            It has exception handling which does the needful according to the error raised
+        """
         final_list = []
         try:
             file = open(file_name, "r")
@@ -43,6 +52,9 @@ class Parser():
             return final_list
     
     def prompts_parser(self, file_name, delimiter):
+        """ Parses the promptsPS12.txt and returns a list of students to be inserted.
+            It has exception handling which does the needful according to the error raised
+        """
         output_tuple = (None, None)
         try:
             file = open(file_name, "r")
@@ -73,6 +85,7 @@ class Parser():
             return output_tuple
 
     def final_output_parser(self, file_name, output_string):
+        """ Method to write the formatted strings into the outputPS12.txt file"""
         try:
             file = open(file_name, "w")
             file.write(output_string)
@@ -83,7 +96,7 @@ class Parser():
 
 # p = Parser()
 # p.file_parser('./test.txt')
-#print(list(map(lambda x: x.strip(), student_string.strip().split(delimiter))))
+# print(list(map(lambda x: x.strip(), student_string.strip().split(delimiter))))
 # stud_details_list.append(stud_list[0].strip())
 # stud_details_list.append(float(stud_list[1].strip()))
 #return list(map(lambda x: x.strip(), student_string.strip().split(delimiter))))

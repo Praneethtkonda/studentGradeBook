@@ -1,3 +1,4 @@
+"""Errors utility class"""
 class CgpaNotInRangeError(Exception):
     """Exception raised for errors in the cgpa range."""
     pass
