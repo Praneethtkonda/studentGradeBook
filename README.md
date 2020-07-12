@@ -8,6 +8,8 @@ Student GradeBook is a personal project (MTech) of mine. It uses hashtable and p
 ## Folder Structure
 ```bash
 |-- README.md
+|-- analysisPS12.txt
+|-- hashtable_design_document
 |-- inputPS12.txt
 |-- main.py
 |-- outputPS12.txt
@@ -20,3 +22,5 @@ Student GradeBook is a personal project (MTech) of mine. It uses hashtable and p
     |-- parser.py
 ```
 The project comprises of ```main.py``` which is the main driver code. The utilities comprises of custom made hash_table, file parsers and string output formatters.
+
+```analysisPS12.txt``` is about the run time analysis of the program and ```hashtable_design_document.txt``` is about the design details regarding MyHashTable.

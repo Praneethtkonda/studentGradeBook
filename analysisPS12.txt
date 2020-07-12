@@ -1,0 +1,68 @@
+Analysis of the studentGradeBook program:-
+----------------------------------------
+The Analysis is done on each function and the overall running complexity of the program will be given:-
+
+Function wise complexity:-
+------------------------
+Coming from the main function 
+    1.) initializeHash => Takes constant time because it is just initializing the required hashtables
+                       => complexity: O(1)
+    2.) parser.student_file_parser
+        => This is the parser logic to parse and validate the details from the input file and takes the
+        students and then returns a list of students to be inserted into the hash table. Suppose there
+        are N valid student records in the file. To parse all of them is O(N) time and inserting them
+        individually in the hash table is O(1).
+        So, overall here it is O(N) + n * O(1) => O(N)
+    3.) parser.prompts_parser => Takes constant time as it is just reading and validating two lines i.e O(1).
+    4.) hallOfFame 
+        => It takes N records from student hash table and inserts A records into the hall_of_fame hash table
+        Here A will be N if all the entries are valid as per the hall of fame requirement. But, usually there
+        will be entries that won't be valid. So, ideally A <= N. Also the formatter code will only create the
+        formatted string for A records.
+
+        So, overall the complexity to parse through N records and insert A records will be O(N).
+    5.) newCourseList
+        => Same as the hall of fame method but the validity logic of the student record will change over here.
+        This method also does validate N records and inserts A records into the new course list hash table.
+        Also the formatter code will only create the formatted string for A records.
+
+        So, overall the complexity to parse through N records and insert A records will be O(N).
+
+    6.) depAvg
+        => While inserting student records we insert unique keys for each department into the department
+        hashtable.
+        So, it will look like 
+                {
+                    MEC: { "max": 0.0, "avg": 0.0},  => D = 4 departments
+                    CSE: { "max": 0.0, "avg": 0.0},
+                    ECE: { "max": 0.0, "avg": 0.0},
+                    ARC: { "max": 0.0, "avg": 0.0}
+                }
+        Now coming to the depAvg it iterates through the unique keys of the department hashtable. Let us assume
+        the total number of departments as D. 
+
+        For each department we filter out some A records from the N students in the student records which belong
+        to that department and insert the cpga in a list. Then we iterate through the list of A student's cpga
+        and compute the max and average for the list. Here A <= N. and computing max is O(A) and avg is O(1) since
+        we have the sum computed. i.e O(A) + O(N) + O(1) + O(1) + O(1). Last two O(1) are for inserting max and
+        avg values for that department hashtable. Here for each department the value is another small hashtable
+        which has only two keys i.e "max" and "avg".
+
+        So, overall here the complexity will be O(D) * O(N) 
+            where D is the number of departments 
+            N is the total number of student records.
+
+    7.) final_output_parser
+        This is an utility method which just writes the formatted string into a file. It takes constanst time O(1).
+    8.) destroyHash
+        This destroys all the records in the created hash tables and it takes constant time i.e O(1).
+
+Overall complexity:-
+------------------
+    Since all these functions run one after other the overall complexity is the sum of all the individual
+    complexities i.e
+
+    Final complexity = O(1) + O(N) + O(1) + O(N) + O(N) + O(D) * O(N) + O(1) + O(1)
+                     = O(D) * O(N)
+
+    So, from analysis this whole program runs in O(D) * O(N) complexity.
