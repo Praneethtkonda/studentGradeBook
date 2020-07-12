@@ -1,10 +1,14 @@
 # Student GradeBook
-Student GradeBook is a personal project (MTech) of mine. It uses hashtable and performs some actions on the student records.
+[Student GradeBook](https://github.com/Praneethtkonda/studentGradeBook.git) is a personal project (MTech) of mine. It uses hashtable and performs some actions on the student records.
 
 ## Build Status
 
 ![Status](https://github.com/Praneethtkonda/studentGradeBook/workflows/Python%20application/badge.svg)
 
+## Running the program
+```bash
+python3.7 main.py # Configure the inputPS12.txt as desired
+```
 ## Folder Structure
 ```bash
 |-- README.md
