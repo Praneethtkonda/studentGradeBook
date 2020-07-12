@@ -2,7 +2,7 @@ COEFFICIENT = 53
 
 def hashCode(key):
     """Utility method to compute the hash code for strings used to find index in compression map.
-       hash(s)=s[0] + s[1]⋅a + s[2]⋅a^2 + ... + s[n−1]⋅a^n−1 mod m
+       hashCode(s)=s[0] + s[1]⋅a + s[2]⋅a^2 + ... + s[n−1]⋅a^n−1 mod m
        It takes weights for each character based on position and multiplies with ascii code of that character"""
     return sum(ord(v) * (COEFFICIENT ** i) for i, v in enumerate(key))
 

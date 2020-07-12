@@ -1,0 +1,75 @@
+Implementation and design considerations for MyHashTable:-
+--------------------------------------------------------
+
+Generally, MyHashTable is developed to serve the purpose of storing and retrieving key value pairs faster.
+It consists of a bucket array into which the elements(key/value pair) are inserted.
+
+So, any hashtable there will be a hash function for each key we will find an index and for that index in the
+bucket array we store the value. For this use case we have used a compression map, through which initially the
+key maps into the compression map to get the hash code and then for that hash code we apply the hash function
+to map it to the bucket array.
+
+    key -> hashCode -> [. . . -2, -1, 0, 1, 2, . . .] -> [0, 1, 2, 3, 4, 5 .... N-1]
+                                Compression map                 Bucket array
+
+Hash Code:-
+---------
+So, we can't take the key and directly use the hash function on the key and put in bucket array because there will
+be lot of collisions. To overcome that we use compression map and find a hash code first for the key.
+
+In this case we have considered keys as strings and designed the hashcode as mentioned below:-
+       hashCode(s)=s[0] + s[1]⋅a + s[2]⋅a^2 + ... + s[n−1]⋅a^n−1 mod m
+       Here s := key, a := any prime ideally we chose 53, n:= position of the character
+We consider the weight of each character based on the position and multiply the ascii value of the character with 
+the chosen prime value power raised the position. We do this to acheive a unique value for that key. Because we have
+to minimize the collisions in the compression map as far as possible to get better load factor. We consider the weights
+also to get different value for words with same alphabets with different positions.
+
+    For Example:-
+    -----------
+    dear => 100 + (101 * 53) + (97 * (53) ^ 2) + (114 * (53) ^ 3) = 17249904
+    read => 114 + (101 * 53) + (97 * (53) ^ 2) + (100 * (53) ^ 3) = 15165640
+
+Hash Function:-
+-------------
+So, the bucket array's initial capacity is 11. If we use a basic hash function like hashCode % N we might get
+into lot of collisions. So, to have a better hash function which will give lesser collisions we chose the MAD
+method i.e ((a * hashCode(k) + b) mod p) mod N to get the bucket index
+       Here a, b are some prime numbers which are less than p.
+       p is also a prime number and N is the capacity of the bucket array.
+
+    For Example:-
+    -----------
+    Suppose p = 109345121, a = 10934511, b = 109345101, N = 11
+    hashFunction('read') = (((10934511 * hashCode('dear')) + 109345101) % 109345121) % 11
+                         = 8 that maps into the 8th index of the bucket array
+
+Bucket Array Structure:-
+----------------------
+Bucket array is the storage container for storing the key, value pairs. The total number of elements that can
+go inside the bucket array is the capacity of the hash table. Our implementation of the bucket array is a list
+which holds key, value pairs.
+    i.e [None, [key, value], [key2, value2], None]
+
+By default the elements will be None. But once we insert a key at a paticular index we insert an array of two
+elements with one is key and the other is the value. There will be cases where the capacity of the bucket array
+will be full. Then we resize our bucket array.
+
+In our current implementation we resize the bucket array whenever there are elements inserted is almost equal to
+half of the capacity. This is done to maintain a very good load factor that intern results to less collsions.
+
+Collision Handling:-
+------------------
+This is the most important part of any hash table. If we don't handle collisions we might lead into overriding the
+values in the bucket array. Even though we have used MAD method with hash code to calculate the bucket index there
+can still exist collisions.
+
+In our implementation we have used linear probing to handle collisions. Initially, we have considered about the
+clustering problem but since our hash function is generating with lesser collisions we didn't go for polynomial
+or double hashing since we have tested with some values. So, for this string as use case and the way of entries
+we have decided to use the linear probing.
+
+In linear probing through hashFunction if there is a collision with the bucket index we probe the next element
+to see if it is available and if not then we keep on probing until we get a valid slot in the bucket array.
+
+    bucket_index = (bucket_index + 1) % N and we keep on doing it till we get a valid slot.
